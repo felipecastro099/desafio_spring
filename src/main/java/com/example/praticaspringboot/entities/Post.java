@@ -1,17 +1,18 @@
 package com.example.praticaspringboot.entities;
 
 import java.util.Date;
-import java.util.List;
 
 public class Post {
     private Long id;
     private Date date;
-    private List<Product> products;
+    private User user;
+    private Product product;
 
-    public Post(Long id, Date date, List<Product> products) {
+    public Post(Long id, Date date, User user, Product product) {
         this.id = id;
         this.date = date;
-        this.products = products;
+        this.user = user;
+        this.product = product;
     }
 
     public Long getId() {
@@ -30,11 +31,19 @@ public class Post {
         this.date = date;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public User getUser() {
+        return user;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }
