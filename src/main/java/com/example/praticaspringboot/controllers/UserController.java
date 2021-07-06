@@ -29,4 +29,9 @@ public class UserController {
     public ResponseEntity<?> count(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.countFollow(userId));
     }
+
+    @GetMapping("/{userId}/followers/list")
+    public ResponseEntity<?> followers(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.followers(userId));
+    }
 }
