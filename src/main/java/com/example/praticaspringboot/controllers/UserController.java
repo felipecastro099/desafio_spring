@@ -21,8 +21,12 @@ public class UserController {
 
     @PostMapping("/{userId}/follow/{userIdToFollow}")
     public ResponseEntity<?> follow(@PathVariable Long userId, @PathVariable Long userIdToFollow) {
-        System.out.println(userId);
         userService.follow(userId, userIdToFollow);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/{userId}/followers/count/")
+    public ResponseEntity<?> count(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.countFollow(userId));
     }
 }

@@ -21,12 +21,13 @@ public class UserRepository {
     }
 
     public User findById(Long id) {
-        Optional<User> user = users.stream().filter(v -> v.getId() == 1).findFirst();
+        Optional<User> user = users.stream().filter(v -> v.getId() == id).findFirst();
 
         return user.orElse(null);
     }
 
     public void follow(User user, User userToFollow) {
-        user.getUsers().add(userToFollow);
+        user.getFollowed().add(userToFollow);
+        userToFollow.getFollowers().add(user);
     }
 }

@@ -1,8 +1,10 @@
 package com.example.praticaspringboot.services;
 
+import com.example.praticaspringboot.dto.users.UserCountDTO;
 import com.example.praticaspringboot.dto.users.UserDTO;
 import com.example.praticaspringboot.entities.User;
 import com.example.praticaspringboot.repositories.UserRepository;
+import com.example.praticaspringboot.utils.convertor.UserCountMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,5 +25,15 @@ public class UserService {
         if (user != null && userToFollow != null) {
             userRepository.follow(user, userToFollow);
         }
+    }
+
+    public UserCountDTO countFollow(Long id) {
+        User user = userRepository.findById(id);
+
+        if (user != null) {
+            return UserCountMapper.toDto(user);
+        }
+
+        return null;
     }
 }

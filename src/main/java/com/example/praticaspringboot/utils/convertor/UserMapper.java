@@ -13,7 +13,8 @@ public class UserMapper {
     }
 
     public static User toEntity(UserDTO dto){
-        List<User> users = new ArrayList<>();
-        return new User(dto.getUserID(), dto.getUserName(), users);
+        List<User> followers = new ArrayList<>();
+        List<User> followed = new ArrayList<>();
+        return new User(dto.getUserID(), dto.getUserName(), followers, followed);
     }
 }
