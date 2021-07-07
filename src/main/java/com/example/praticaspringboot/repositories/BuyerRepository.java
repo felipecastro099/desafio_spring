@@ -1,9 +1,7 @@
 package com.example.praticaspringboot.repositories;
 
-import com.example.praticaspringboot.dto.buyers.BuyerDTO;
 import com.example.praticaspringboot.entities.Buyer;
 import com.example.praticaspringboot.entities.Seller;
-import com.example.praticaspringboot.utils.convertor.buyers.BuyerMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -15,12 +13,10 @@ public class BuyerRepository {
 
     List<Buyer> buyers = new ArrayList<>();
 
-    public BuyerDTO create(BuyerDTO buyerDTO) {
-        Buyer buyer = BuyerMapper.toEntity(buyerDTO);
-
+    public Buyer create(Buyer buyer) {
         buyers.add(buyer);
 
-        return BuyerMapper.toDto(buyer);
+        return buyer;
     }
 
     public Buyer findById(Long id) {

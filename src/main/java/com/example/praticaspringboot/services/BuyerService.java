@@ -4,9 +4,11 @@ import com.example.praticaspringboot.dto.buyers.BuyerDTO;
 import com.example.praticaspringboot.dto.buyers.BuyerFollowedDTO;
 import com.example.praticaspringboot.entities.Buyer;
 import com.example.praticaspringboot.entities.Seller;
+import com.example.praticaspringboot.exceptions.NotFoundException;
 import com.example.praticaspringboot.repositories.BuyerRepository;
 import com.example.praticaspringboot.repositories.SellerRepository;
 import com.example.praticaspringboot.utils.convertor.buyers.BuyerFollowedMapper;
+import com.example.praticaspringboot.utils.convertor.buyers.BuyerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,15 +22,23 @@ public class BuyerService {
     private SellerRepository sellerRepository;
 
     public BuyerDTO createBuyer(BuyerDTO buyerDTO) {
-        return buyerRepository.create(buyerDTO);
+        Buyer buyer = BuyerMapper.toEntity(buyerDTO);
+
+        Buyer result = buyerRepository.create(buyer);
+
+        return BuyerMapper.toDto(result);
     }
 
-    public void follow(Long buyerId, Long sellerIdToFollow) {
+    public void follow(Long buyerId, Long sellerIdToFollow){
         Buyer buyer = buyerRepository.findById(buyerId);
         Seller sellerToFollow = sellerRepository.findById(sellerIdToFollow);
 
         if (buyer != null && sellerToFollow != null) {
             buyerRepository.follow(buyer, sellerToFollow);
+        }
+
+        if (buyer == null || sellerToFollow == null) {
+            throw new NotFoundException("Buyer or Seller not found.");
         }
     }
 
@@ -39,6 +49,6 @@ public class BuyerService {
             return BuyerFollowedMapper.toDto(buyer);
         }
 
-        return null;
+        throw new NotFoundException("Buyer not found.");
     }
 }

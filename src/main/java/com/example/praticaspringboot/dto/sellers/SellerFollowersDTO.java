@@ -1,7 +1,6 @@
 package com.example.praticaspringboot.dto.sellers;
 
 import com.example.praticaspringboot.dto.buyers.BuyerDTO;
-import com.example.praticaspringboot.entities.Buyer;
 
 import java.util.List;
 

@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -20,7 +22,7 @@ public class UserController {
     private SellerService sellerService;
 
     @PostMapping("/buyer")
-    public ResponseEntity<?> createBuyer(@RequestBody BuyerDTO buyerDTO) {
+    public ResponseEntity<?> createBuyer(@RequestBody @Valid BuyerDTO buyerDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(buyerService.createBuyer(buyerDTO));
     }
 
