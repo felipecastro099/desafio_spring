@@ -32,7 +32,7 @@ public class SellerService {
             return SellerCountMapper.toDto(seller);
         }
 
-        throw new NotFoundException("Seller not found.");
+        throw new NotFoundException("Vendedor não encontrado.");
     }
 
     public SellerFollowersDTO followers(Long id) {
@@ -42,6 +42,6 @@ public class SellerService {
             return SellerFollowersMapper.toDto(seller);
         }
 
-        throw new NotFoundException("Seller not found.");
+        throw new NotFoundException("Vendedor não encontrado.");
     }
 }

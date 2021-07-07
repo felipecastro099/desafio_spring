@@ -38,7 +38,7 @@ public class BuyerService {
         }
 
         if (buyer == null || sellerToFollow == null) {
-            throw new NotFoundException("Buyer or Seller not found.");
+            throw new NotFoundException("Vendedor ou comprador não encontrado.");
         }
     }
 
@@ -49,6 +49,6 @@ public class BuyerService {
             return BuyerFollowedMapper.toDto(buyer);
         }
 
-        throw new NotFoundException("Buyer not found.");
+        throw new NotFoundException("Comprador não encontrado.");
     }
 }

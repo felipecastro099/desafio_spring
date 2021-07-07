@@ -9,10 +9,8 @@ public class Product {
     private String notes;
     private Double price;
     private ProductCategory category;
-    private Boolean hasPromo;
-    private Double discount;
 
-    public Product(Long id, String name, String type, String brand, String color, String notes, Double price, ProductCategory category, Boolean hasPromo, Double discount) {
+    public Product(Long id, String name, String type, String brand, String color, String notes, Double price, ProductCategory category) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -21,8 +19,6 @@ public class Product {
         this.notes = notes;
         this.price = price;
         this.category = category;
-        this.hasPromo = hasPromo;
-        this.discount = discount;
     }
 
     public Long getId() {
@@ -87,21 +83,5 @@ public class Product {
 
     public void setCategory(ProductCategory category) {
         this.category = category;
-    }
-
-    public Boolean getHasPromo() {
-        return hasPromo;
-    }
-
-    public void setHasPromo(Boolean hasPromo) {
-        this.hasPromo = hasPromo;
-    }
-
-    public Double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Double discount) {
-        this.discount = discount;
     }
 }

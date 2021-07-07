@@ -20,11 +20,18 @@ public class CustomHandlerException {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    private ResponseEntity<?> processFieldErrors(List<FieldError> fieldErrors) {
-        List<ExceptionDTO> listErrors = new ArrayList<>();
+    public ResponseEntity<?> argumentNotValidHandler(MethodArgumentNotValidException e) {
+        List<FieldError> fieldErrors = e.getFieldErrors();
+        List<ExceptionDTO> exceptions = processFieldErrors(fieldErrors);
 
-        fieldErrors.forEach(list -> listErrors.add(new ExceptionDTO(list.getField() + ": " + list.getDefaultMessage())));
+        return ResponseEntity.badRequest().body(exceptions);
+    }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(listErrors);
+    private List<ExceptionDTO> processFieldErrors(List<FieldError> fieldErrors) {
+        List<ExceptionDTO> exceptions = new ArrayList<>();
+
+        fieldErrors.forEach(error -> exceptions.add(new ExceptionDTO(error.getDefaultMessage())));
+
+        return exceptions;
     }
 }

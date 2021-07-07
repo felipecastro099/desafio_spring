@@ -5,13 +5,13 @@ import java.util.Date;
 public class Post {
     private Long id;
     private Date date;
-    private User user;
+    private Seller seller;
     private Product product;
 
-    public Post(Long id, Date date, User user, Product product) {
+    public Post(Long id, Date date, Seller seller, Product product) {
         this.id = id;
         this.date = date;
-        this.user = user;
+        this.seller = seller;
         this.product = product;
     }
 
@@ -31,12 +31,12 @@ public class Post {
         this.date = date;
     }
 
-    public User getUser() {
-        return user;
+    public Seller getSeller() {
+        return seller;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
 
     public Product getProduct() {

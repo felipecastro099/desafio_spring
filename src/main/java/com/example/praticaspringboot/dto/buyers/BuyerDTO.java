@@ -5,8 +5,8 @@ import javax.validation.constraints.NotNull;
 
 public class BuyerDTO {
     private Long userID;
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "O userName não pode ser nulo.")
+    @NotEmpty(message = "O userName não pode está vazio.")
     private String userName;
 
     public BuyerDTO(Long userID, String userName) {
