@@ -1,10 +1,10 @@
-package com.example.praticaspringboot.dto.users;
+package com.example.praticaspringboot.dto.sellers;
 
-public class UserDTO {
+public class SellerDTO {
     private Long userID;
     private String userName;
 
-    public UserDTO(Long userID, String userName) {
+    public SellerDTO(Long userID, String userName) {
         this.userID = userID;
         this.userName = userName;
     }
