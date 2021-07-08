@@ -1,6 +1,6 @@
 package com.example.praticaspringboot.entities;
 
-abstract class User {
+public abstract class User {
     protected Long id;
     protected String name;
 

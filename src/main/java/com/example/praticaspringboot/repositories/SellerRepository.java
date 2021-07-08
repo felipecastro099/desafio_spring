@@ -1,6 +1,7 @@
 package com.example.praticaspringboot.repositories;
-
+;
 import com.example.praticaspringboot.entities.Seller;
+import com.example.praticaspringboot.exceptions.NotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -20,6 +21,10 @@ public class SellerRepository {
     public Seller findById(Long id) {
         Optional<Seller> sellerOptional = sellers.stream().filter(v -> v.getId() == id).findFirst();
 
-        return sellerOptional.orElse(null);
+        if (sellerOptional.isPresent()) {
+            return sellerOptional.get();
+        }
+
+        throw new NotFoundException("Vendedor não encontrado.");
     }
 }

@@ -2,6 +2,7 @@ package com.example.praticaspringboot.repositories;
 
 import com.example.praticaspringboot.entities.Buyer;
 import com.example.praticaspringboot.entities.Seller;
+import com.example.praticaspringboot.exceptions.NotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -22,7 +23,11 @@ public class BuyerRepository {
     public Buyer findById(Long id) {
         Optional<Buyer> buyerOptional = buyers.stream().filter(v -> v.getId() == id).findFirst();
 
-        return buyerOptional.orElse(null);
+        if (buyerOptional.isPresent()){
+            return buyerOptional.get();
+        }
+
+        throw new NotFoundException("Comprador não encontrado");
     }
 
     public void follow(Buyer buyer, Seller sellerToFollow) {

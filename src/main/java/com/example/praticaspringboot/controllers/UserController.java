@@ -49,12 +49,12 @@ public class UserController {
     }
 
     @GetMapping("/{sellerId}/followers/list")
-    public ResponseEntity<?> followers(@PathVariable Long sellerId) {
-        return ResponseEntity.status(HttpStatus.OK).body(sellerService.followers(sellerId));
+    public ResponseEntity<?> followers(@PathVariable Long sellerId, @RequestParam(required = false, defaultValue = "") String order) {
+        return ResponseEntity.status(HttpStatus.OK).body(sellerService.followers(sellerId, order));
     }
 
     @GetMapping("/{buyerId}/followed/list")
-    public ResponseEntity<?> followed(@PathVariable Long buyerId) {
-        return ResponseEntity.status(HttpStatus.OK).body(buyerService.followed(buyerId));
+    public ResponseEntity<?> followed(@PathVariable Long buyerId, @RequestParam(required = false, defaultValue = "") String order) {
+        return ResponseEntity.status(HttpStatus.OK).body(buyerService.followed(buyerId, order));
     }
 }

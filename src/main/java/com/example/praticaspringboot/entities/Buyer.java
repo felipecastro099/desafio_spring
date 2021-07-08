@@ -3,6 +3,7 @@ package com.example.praticaspringboot.entities;
 import java.util.List;
 
 public class Buyer extends User {
+
     private List<Seller> followed;
 
     public Buyer(Long id, String name, List<Seller> followed) {

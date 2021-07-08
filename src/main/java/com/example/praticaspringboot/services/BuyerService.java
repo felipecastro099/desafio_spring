@@ -2,6 +2,7 @@ package com.example.praticaspringboot.services;
 
 import com.example.praticaspringboot.dto.buyers.BuyerDTO;
 import com.example.praticaspringboot.dto.buyers.BuyerFollowedDTO;
+import com.example.praticaspringboot.dto.sellers.SellerDTO;
 import com.example.praticaspringboot.entities.Buyer;
 import com.example.praticaspringboot.entities.Seller;
 import com.example.praticaspringboot.exceptions.NotFoundException;
@@ -11,6 +12,9 @@ import com.example.praticaspringboot.utils.convertor.buyers.BuyerFollowedMapper;
 import com.example.praticaspringboot.utils.convertor.buyers.BuyerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.Comparator;
 
 @Service
 public class BuyerService {
@@ -33,35 +37,31 @@ public class BuyerService {
         Buyer buyer = buyerRepository.findById(buyerId);
         Seller sellerToFollow = sellerRepository.findById(sellerIdToFollow);
 
-        if (buyer != null && sellerToFollow != null) {
-            buyerRepository.follow(buyer, sellerToFollow);
-        }
+        buyerRepository.follow(buyer, sellerToFollow);
 
-        if (buyer == null || sellerToFollow == null) {
-            throw new NotFoundException("Vendedor ou comprador não encontrado.");
-        }
     }
 
     public void unfollow(Long buyerId, Long sellerIdToUnfollow){
         Buyer buyer = buyerRepository.findById(buyerId);
         Seller sellerToFollow = sellerRepository.findById(sellerIdToUnfollow);
 
-        if (buyer != null && sellerToFollow != null) {
-            buyerRepository.unfollow(buyer, sellerToFollow);
-        }
-
-        if (buyer == null || sellerToFollow == null) {
-            throw new NotFoundException("Vendedor ou comprador não encontrado.");
-        }
+        buyerRepository.unfollow(buyer, sellerToFollow);
     }
 
-    public BuyerFollowedDTO followed(Long id) {
+    public BuyerFollowedDTO followed(Long id, String order) {
         Buyer buyer = buyerRepository.findById(id);
+        BuyerFollowedDTO buyerFollowedDTO = BuyerFollowedMapper.toDto(buyer);
 
-        if (buyer != null) {
-            return BuyerFollowedMapper.toDto(buyer);
+        if(order.equals("name_asc")) {
+            Collections.sort(buyerFollowedDTO.getFollowed(), Comparator.comparing(SellerDTO::getUserName));
         }
 
-        throw new NotFoundException("Comprador não encontrado.");
+        if(order.equals("name_desc")) {
+            Collections.sort(buyerFollowedDTO.getFollowed(), Comparator.comparing(SellerDTO::getUserName).reversed());
+        }
+
+        return buyerFollowedDTO;
     }
+
+
 }
