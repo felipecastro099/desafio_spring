@@ -1,5 +1,6 @@
 package com.example.praticaspringboot.services;
 
+import com.example.praticaspringboot.dto.buyers.BuyerDTO;
 import com.example.praticaspringboot.dto.buyers.BuyerListPostDTO;
 import com.example.praticaspringboot.dto.post.PostDTO;
 import com.example.praticaspringboot.dto.post.PostListDTO;
@@ -16,10 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,7 +60,7 @@ public class PostService {
         return PostMapper.toDto(post, category, product);
     }
 
-    public BuyerListPostDTO getPostsPerBuyerAndFiltred(long id) {
+    public BuyerListPostDTO getPostsPerBuyerAndFiltred(long id, String order) {
         Buyer buyer = buyerRepository.findById(id);
 
         if (buyer == null) {
@@ -71,7 +69,17 @@ public class PostService {
 
         List<PostListDTO> posts = getPostFromTwoWeeks(id);
 
-        return BuyerListPostMapper.toDto(buyer, posts);
+        BuyerListPostDTO buyerListPostDTO = BuyerListPostMapper.toDto(buyer, posts);
+
+        if(order.equals("date_asc")) {
+            Collections.sort(posts, Comparator.comparing(PostListDTO::getDate));
+        }
+
+        if(order.equals("date_desc")) {
+            Collections.sort(posts, Comparator.comparing(PostListDTO::getDate).reversed());
+        }
+
+        return buyerListPostDTO;
     }
 
     public List<PostListDTO> getPostFromTwoWeeks(long id) {

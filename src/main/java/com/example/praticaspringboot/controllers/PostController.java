@@ -21,8 +21,8 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.create(postDTO));
     }
 
-    @GetMapping("/followed/{userId}/list")
-    public ResponseEntity<?> listPostsFromTwoWeeks(@PathVariable long userId) {
-        return ResponseEntity.ok(postService.getPostsPerBuyerAndFiltred(userId));
+    @GetMapping("/followed/{buyerId}/list")
+    public ResponseEntity<?> listPostsFromTwoWeeks(@PathVariable long buyerId, @RequestParam(required = false, defaultValue = "") String order) {
+        return ResponseEntity.ok(postService.getPostsPerBuyerAndFiltred(buyerId, order));
     }
 }
