@@ -42,6 +42,19 @@ public class BuyerService {
         }
     }
 
+    public void unfollow(Long buyerId, Long sellerIdToUnfollow){
+        Buyer buyer = buyerRepository.findById(buyerId);
+        Seller sellerToFollow = sellerRepository.findById(sellerIdToUnfollow);
+
+        if (buyer != null && sellerToFollow != null) {
+            buyerRepository.unfollow(buyer, sellerToFollow);
+        }
+
+        if (buyer == null || sellerToFollow == null) {
+            throw new NotFoundException("Vendedor ou comprador não encontrado.");
+        }
+    }
+
     public BuyerFollowedDTO followed(Long id) {
         Buyer buyer = buyerRepository.findById(id);
 

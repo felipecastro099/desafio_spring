@@ -37,6 +37,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @PostMapping("/{buyerId}/unfollow/{sellerIdToUnfollow}")
+    public ResponseEntity<?> unfollow(@PathVariable Long buyerId, @PathVariable Long sellerIdToUnfollow) {
+        buyerService.unfollow(buyerId, sellerIdToUnfollow);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
     @GetMapping("/{sellerId}/followers/count/")
     public ResponseEntity<?> count(@PathVariable Long sellerId) {
         return ResponseEntity.status(HttpStatus.OK).body(sellerService.countFollow(sellerId));

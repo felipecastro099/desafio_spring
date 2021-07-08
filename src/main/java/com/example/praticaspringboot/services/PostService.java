@@ -1,19 +1,26 @@
 package com.example.praticaspringboot.services;
 
+import com.example.praticaspringboot.dto.buyers.BuyerListPostDTO;
 import com.example.praticaspringboot.dto.post.PostDTO;
-import com.example.praticaspringboot.entities.Post;
-import com.example.praticaspringboot.entities.Product;
-import com.example.praticaspringboot.entities.ProductCategory;
-import com.example.praticaspringboot.entities.Seller;
+import com.example.praticaspringboot.dto.post.PostListDTO;
+import com.example.praticaspringboot.entities.*;
 import com.example.praticaspringboot.exceptions.NotFoundException;
-import com.example.praticaspringboot.repositories.CategoryRepository;
-import com.example.praticaspringboot.repositories.PostRepository;
-import com.example.praticaspringboot.repositories.ProductRepository;
-import com.example.praticaspringboot.repositories.SellerRepository;
+import com.example.praticaspringboot.repositories.*;
+import com.example.praticaspringboot.utils.convertor.buyers.BuyerListPostMapper;
+import com.example.praticaspringboot.utils.convertor.posts.PostListMapper;
 import com.example.praticaspringboot.utils.convertor.posts.PostMapper;
 import com.example.praticaspringboot.utils.convertor.pruducts.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -29,6 +36,9 @@ public class PostService {
 
     @Autowired
     private SellerRepository sellerRepository;
+
+    @Autowired
+    private BuyerRepository buyerRepository;
 
     public PostDTO create (PostDTO postDTO) {
         Seller seller = sellerRepository.findById(postDTO.getUserId());
@@ -50,5 +60,56 @@ public class PostService {
         postRepository.create(post);
 
         return PostMapper.toDto(post, category, product);
+    }
+
+    public BuyerListPostDTO getPostsPerBuyerAndFiltred(long id) {
+        Buyer buyer = buyerRepository.findById(id);
+
+        if (buyer == null) {
+            throw new NotFoundException("Comprador não encontrado");
+        }
+
+        List<PostListDTO> posts = getPostFromTwoWeeks(id);
+
+        return BuyerListPostMapper.toDto(buyer, posts);
+    }
+
+    public List<PostListDTO> getPostFromTwoWeeks(long id) {
+        // capturando instância de data
+        Date localDate = Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.of("America/Sao_Paulo")).toInstant());
+        Date localDateAfterTwoWeeks = Date.from(LocalDate.now().plus(-2, ChronoUnit.WEEKS).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+
+        // capturando os posts dos vendedores de um determinado comprador
+        List<Post> posts = getPostsFromBuyer(id);
+
+        //gerando um array de posts filtrados com os dois periodos solicitados
+        List<Post> postsFiltred = posts.stream().filter(post -> post.getDate().before(localDate) && post.getDate().after(localDateAfterTwoWeeks)).collect(Collectors.toList());
+        List<PostListDTO> postDTOS = new ArrayList<>();
+
+        postsFiltred.forEach(post -> {
+            postDTOS.add(PostListMapper.toDto(post, post.getProduct().getCategory(), post.getProduct()));
+        });
+
+        return postDTOS;
+    }
+
+    public List<Post> getPostsFromBuyer(long id) {
+        Buyer buyer = buyerRepository.findById(id);
+
+        List<Seller> buyerSellers = buyer.getFollowed();
+
+        List<Post> posts = postRepository.findAll();
+
+        List<Post> postSellers = new ArrayList<>();
+
+        buyerSellers.forEach(seller -> {
+            posts.forEach(post -> {
+                if (post.getSeller() == seller) {
+                    postSellers.add(post);
+                }
+            });
+        });
+
+        return postSellers;
     }
 }

@@ -5,10 +5,7 @@ import com.example.praticaspringboot.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -22,5 +19,10 @@ public class PostController {
     @PostMapping("/newpost")
     public ResponseEntity<?> createPost(@RequestBody @Valid PostDTO postDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.create(postDTO));
+    }
+
+    @GetMapping("/followed/{userId}/list")
+    public ResponseEntity<?> listPostsFromTwoWeeks(@PathVariable long userId) {
+        return ResponseEntity.ok(postService.getPostsPerBuyerAndFiltred(userId));
     }
 }

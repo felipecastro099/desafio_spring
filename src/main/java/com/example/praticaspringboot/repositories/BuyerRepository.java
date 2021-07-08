@@ -29,4 +29,9 @@ public class BuyerRepository {
         buyer.getFollowed().add(sellerToFollow);
         sellerToFollow.getFollowers().add(buyer);
     }
+
+    public void unfollow(Buyer buyer, Seller sellerToUnfollow) {
+        buyer.getFollowed().remove(sellerToUnfollow);
+        sellerToUnfollow.getFollowers().remove(buyer);
+    }
 }
