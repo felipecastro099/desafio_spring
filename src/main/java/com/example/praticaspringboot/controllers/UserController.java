@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/seller")
-    public ResponseEntity<?> createSeller(@RequestBody SellerDTO sellerDTO) {
+    public ResponseEntity<?> createSeller(@RequestBody @Valid SellerDTO sellerDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(sellerService.createSeller(sellerDTO));
     }
 
