@@ -33,8 +33,8 @@ public class PostController {
     }
 
     @GetMapping("/{sellerId}/list")
-    public ResponseEntity<?> listPromoPost(@PathVariable long sellerId) {
-        return ResponseEntity.ok(postService.getPostPromoListFromSeller(sellerId));
+    public ResponseEntity<?> listPromoPost(@PathVariable long sellerId, @RequestParam(required = false, defaultValue = "") String order) {
+        return ResponseEntity.ok(postService.getPostPromoListFromSeller(sellerId, order));
     }
 
     @GetMapping("/followed/{buyerId}/list")

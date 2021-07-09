@@ -365,6 +365,74 @@ Repositório que contém a solução do desafio spring boot
       "hasPromo": true,
       "discount": 0.25
     }
+    ]
+  }
+  ````
+  
+- GET
+```` 
+/products/1/list?order=date_asc
+/products/1/list?order=date_desc
+````
+  - Ordenar lista de posts promocionais
+
+    - body response
+````
+{
+  "userId": 1,
+  "userName": "Vendedor 1",
+  "posts": [
+    {
+      "userId": 1,
+      "id_post": 3,
+      "date": "30-06-2021",
+      "detail": {
+        "product_id": 3,
+        "productName": "Cadeira Gamer",
+        "type": "Gamer",
+        "brand": "Racer",
+        "color": "black",
+        "notes": "Special Edition"
+      },
+      "category": 1,
+      "price": 1500.0,
+      "hasPromo": true,
+      "discount": 0.25
+    },
+    {
+      "userId": 1,
+      "id_post": 1,
+      "date": "29-06-2021",
+      "detail": {
+        "product_id": 1,
+        "productName": "Cadeira Gamer",
+        "type": "Gamer",
+        "brand": "Racer",
+        "color": "black",
+        "notes": "Special Edition"
+      },
+      "category": 1,
+      "price": 1500.0,
+      "hasPromo": true,
+      "discount": 0.25
+    },
+    {
+      "userId": 1,
+      "id_post": 2,
+      "date": "28-06-2021",
+      "detail": {
+        "product_id": 2,
+        "productName": "Cadeira Gamer",
+        "type": "Gamer",
+        "brand": "Racer",
+        "color": "black",
+        "notes": "Special Edition"
+      },
+      "category": 1,
+      "price": 1500.0,
+      "hasPromo": true,
+      "discount": 0.25
+    }
   ]
 }
-  ````
+````

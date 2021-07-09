@@ -72,9 +72,17 @@ public class PostService {
         return PostPromoCountMapper.toDto(seller, postHasPromo.size());
     }
 
-    public PostListSellerDTO getPostPromoListFromSeller(Long id) {
+    public PostListSellerDTO getPostPromoListFromSeller(Long id, String order) {
         Seller seller = sellerRepository.findById(id);
         List<Post> posts = getPromoPostsFromSeller(seller);
+
+        if(order.equals("date_asc")) {
+            Collections.sort(posts, Comparator.comparing(Post::getDate));
+        }
+
+        if(order.equals("date_desc")) {
+            Collections.sort(posts, Comparator.comparing(Post::getDate).reversed());
+        }
 
         return PostListSellerMapper.toDto(seller, posts);
     }
