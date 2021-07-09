@@ -255,5 +255,116 @@ Repositório que contém a solução do desafio spring boot
       ]
     }
     ````
-  
     
+  - POST ```` /products/newpromopost ````  
+  - US010: Realizar a publicação de um novo produto promocional
+    - body request
+  ````
+  {
+      "userId": 1,
+      "date": "29-06-2021",
+      "detail": {
+          "productName": "Cadeira Gamer",
+          "type": "Gamer",
+          "brand": "Racer",
+          "color": "black",
+          "notes": "Special Edition"
+      },
+      "category": 1,
+      "price": 1500.0,
+      "hasPromo": true,
+      "discount": 0.25
+  }
+  ````
+    - body response
+  ````
+   {
+      "userId": 1,
+      "id_post": 4,
+      "date": "29-06-2021",
+      "detail": {
+        "product_id": 4,
+        "productName": "Cadeira Gamer",
+        "type": "Gamer",
+        "brand": "Racer",
+        "color": "black",
+        "notes": "Special Edition"
+      },
+      "category": 1,
+      "price": 1500.0,
+      "hasPromo": true,
+      "discount": 0.25
+  }
+  ````
+  - GET ```` /products/{sellerId}/countPromo/ ````
+  - US011: Obtenha o quantidade de produtos promocionais de um vendedor específico
+    - body reponse:
+  ````
+  {
+    "userId": 1,
+    "userName": "Vendedor 1",
+    "promoproducts_count": 1
+  }
+  ````
+  - GET ```` /products/{userId}/list/ ````
+  - US012: Obter uma lista de todos os produtos promocionais de um vendedor específico
+    - body response
+  ```` 
+  
+  "userId": 1,
+  "userName": "Vendedor 1",
+  "posts": [
+    {
+      "userId": 1,
+      "id_post": 2,
+      "date": "29-06-2021",
+      "detail": {
+        "product_id": 2,
+        "productName": "Cadeira Gamer",
+        "type": "Gamer",
+        "brand": "Racer",
+        "color": "black",
+        "notes": "Special Edition"
+      },
+      "category": 1,
+      "price": 1500.0,
+      "hasPromo": true,
+      "discount": 0.25
+    },
+    {
+      "userId": 1,
+      "id_post": 3,
+      "date": "29-06-2021",
+      "detail": {
+        "product_id": 3,
+        "productName": "Cadeira Gamer",
+        "type": "Gamer",
+        "brand": "Racer",
+        "color": "black",
+        "notes": "Special Edition"
+      },
+      "category": 1,
+      "price": 1500.0,
+      "hasPromo": true,
+      "discount": 0.25
+    },
+    {
+      "userId": 1,
+      "id_post": 4,
+      "date": "29-06-2021",
+      "detail": {
+        "product_id": 4,
+        "productName": "Cadeira Gamer",
+        "type": "Gamer",
+        "brand": "Racer",
+        "color": "black",
+        "notes": "Special Edition"
+      },
+      "category": 1,
+      "price": 1500.0,
+      "hasPromo": true,
+      "discount": 0.25
+    }
+  ]
+}
+  ````

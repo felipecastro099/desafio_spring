@@ -2,15 +2,14 @@ package com.example.praticaspringboot.services;
 
 import com.example.praticaspringboot.dto.buyers.BuyerDTO;
 import com.example.praticaspringboot.dto.buyers.BuyerListPostDTO;
-import com.example.praticaspringboot.dto.post.PostDTO;
-import com.example.praticaspringboot.dto.post.PostListDTO;
+import com.example.praticaspringboot.dto.post.*;
 import com.example.praticaspringboot.entities.*;
 import com.example.praticaspringboot.exceptions.NotFoundException;
 import com.example.praticaspringboot.repositories.*;
 import com.example.praticaspringboot.utils.convertor.buyers.BuyerListPostMapper;
-import com.example.praticaspringboot.utils.convertor.posts.PostListMapper;
-import com.example.praticaspringboot.utils.convertor.posts.PostMapper;
+import com.example.praticaspringboot.utils.convertor.posts.*;
 import com.example.praticaspringboot.utils.convertor.pruducts.ProductMapper;
+import com.example.praticaspringboot.utils.convertor.pruducts.ProductPromoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,17 +37,9 @@ public class PostService {
     @Autowired
     private BuyerRepository buyerRepository;
 
-    public PostDTO create (PostDTO postDTO) {
+    public PostDTO create(PostDTO postDTO) {
         Seller seller = sellerRepository.findById(postDTO.getUserId());
         ProductCategory category = categoryRepository.findById(postDTO.getCategory());
-
-        if (seller == null) {
-            throw new NotFoundException("Vendedor não encontrado");
-        }
-
-        if (category == null) {
-            throw new NotFoundException("Categoria não encontrada");
-        }
 
         Product product = ProductMapper.toEntity(postDTO.getDetail(), postDTO, category);
 
@@ -58,6 +49,34 @@ public class PostService {
         postRepository.create(post);
 
         return PostMapper.toDto(post, category, product);
+    }
+
+    public PostPromoDTO createPromoPost(PostPromoDTO postDTO) {
+        Seller seller = sellerRepository.findById(postDTO.getUserId());
+        ProductCategory category = categoryRepository.findById(postDTO.getCategory());
+
+        Product product = ProductPromoMapper.toEntity(postDTO.getDetail(), postDTO, category);
+
+        Post post = PostPromoMapper.toEntity(postDTO, seller, product);
+
+        productRepository.create(product);
+        postRepository.create(post);
+
+        return PostPromoMapper.toDto(post, product);
+    }
+
+    public PostPromoCountDTO getNumberPromoPost(long id) {
+        Seller seller = sellerRepository.findById(id);
+        List<Post> postHasPromo = getPromoPostsFromSeller(seller);
+
+        return PostPromoCountMapper.toDto(seller, postHasPromo.size());
+    }
+
+    public PostListSellerDTO getPostPromoListFromSeller(Long id) {
+        Seller seller = sellerRepository.findById(id);
+        List<Post> posts = getPromoPostsFromSeller(seller);
+
+        return PostListSellerMapper.toDto(seller, posts);
     }
 
     public BuyerListPostDTO getPostsPerBuyerAndFiltred(long id, String order) {
@@ -119,5 +138,33 @@ public class PostService {
         });
 
         return postSellers;
+    }
+
+    public List<Post> getPostsFromSeller(Seller seller) {
+        List<Post> posts = postRepository.findAll();
+
+        List<Post> postSellers = new ArrayList<>();
+
+        posts.forEach(post -> {
+            if (post.getSeller() == seller) {
+                postSellers.add(post);
+            }
+        });
+
+        return postSellers;
+    }
+
+    public  List<Post> getPromoPostsFromSeller(Seller seller) {
+        List<Post> posts = getPostsFromSeller(seller);
+
+        List<Post> postHasPromo = new ArrayList<>();
+
+        posts.forEach(post -> {
+            if (post.getProduct().getHasPromo()) {
+                postHasPromo.add(post);
+            }
+        });
+
+        return postHasPromo;
     }
 }
