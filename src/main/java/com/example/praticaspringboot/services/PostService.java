@@ -90,10 +90,6 @@ public class PostService {
     public BuyerListPostDTO getPostsPerBuyerAndFiltred(long id, String order) {
         Buyer buyer = buyerRepository.findById(id);
 
-        if (buyer == null) {
-            throw new NotFoundException("Comprador não encontrado");
-        }
-
         List<PostListDTO> posts = getPostFromTwoWeeks(id);
 
         BuyerListPostDTO buyerListPostDTO = BuyerListPostMapper.toDto(buyer, posts);

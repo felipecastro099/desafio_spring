@@ -1,6 +1,7 @@
 package com.example.praticaspringboot.repositories;
 
 import com.example.praticaspringboot.entities.Post;
+import com.example.praticaspringboot.exceptions.NotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -24,6 +25,10 @@ public class PostRepository {
     public Post findById(Long id) {
         Optional<Post> result = posts.stream().filter(post -> post.getId() == id).findFirst();
 
-        return result.orElse(null);
+        if (result.isPresent()) {
+            return result.get();
+        }
+
+        throw new NotFoundException("Post não encontrado.");
     }
 }
